@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/account"
+        android:title="@string/account"
+        android:icon="@drawable/account_image"/>
+
+    <item
+        android:id="@+id/k_vector"
+        android:title="@string/build_vector"
+        android:icon="@drawable/k_vector_image"/>
+
+    <item
+        android:id="@+id/statistic"
+        android:title="@string/statistic"
+        android:icon="@drawable/statistic_image"/>
+    <item
+        android:id="@+id/about_us"
+        android:title="@string/about_us"
+        android:icon="@drawable/about_us_image"/>
+
+    <item
+        android:id="@+id/about_kvector"
+        android:title="@string/about_k_vector">
+        <menu>
+            <item
+                android:id="@+id/what_is"
+                android:title="@string/what_is"
+                android:icon="@drawable/about_vector_image"
+                />
+
+            <item
+                android:id="@+id/how_build_norms"
+                android:title="@string/how_build_norms"
+                android:icon="@drawable/about_vector_image"
+                />
+
+            <item
+                android:id="@+id/what_color_means"
+                android:title="@string/what_color_means"
+                android:icon="@drawable/about_vector_image"
+                />
+
+            <item
+                android:id="@+id/how_often"
+                android:title="@string/how_often"
+                android:icon="@drawable/about_vector_image"
+                />
+
+            <item
+                android:id="@+id/red_zone"
+                android:title="@string/red_zone"
+                android:icon="@drawable/about_vector_image"
+                />
+
+        </menu>
+    </item>
+
+
+
+</menu>
