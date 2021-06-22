@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
+import kotlin.math.absoluteValue
 
 class MainActivity : AppCompatActivity(), ResultsListAdapter.ResultListener {
 
@@ -389,13 +390,7 @@ class MainActivity : AppCompatActivity(), ResultsListAdapter.ResultListener {
             }
         }
 
-        myEntries1.sortBy {
-            if (it.x < 0) {
-                it.x * -1
-            } else {
-                it.x
-            }
-        }
+        myEntries1.sortBy { it.x.absoluteValue }
         myEntries2.sortBy { it.x }
 
         updateViewPager(myEntries1, myEntries2)

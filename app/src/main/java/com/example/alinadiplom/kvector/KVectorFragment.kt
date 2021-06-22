@@ -48,43 +48,9 @@ class KVectorFragment : Fragment() {
     }
 
     private fun setChart() {
-        val sets: ArrayList<ILineDataSet> = arrayListOf()
-
-        for (i in graphData.indices) {
-            when (i) {
-                0 -> {
-                    val dataValues: ArrayList<Entry> = arrayListOf()
-                    dataValues.add(Entry(0f, 0f))
-                    dataValues.add(KVectorHelper.getEntry(graphData[1], graphData))
-                    val lineDataSet = LineDataSet(dataValues, "ckeck")
-                    lineDataSet.setColors(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                    lineDataSet.lineWidth = 2f
-                    sets.add(lineDataSet)
-                }
-                graphData.size - 1 -> {
-                    if (i % 2 != 0) {
-                        val lineDataSet = KVectorHelper.initDataSet(graphData[i], graphData[i], graphData)
-                        lineDataSet.setColors(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                        lineDataSet.lineWidth = 2f
-                        sets.add(lineDataSet)
-                    } else {
-                        val lineDataSet = KVectorHelper.initDataSet(graphData[i - 1], graphData[i], graphData)
-                        lineDataSet.setColors(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                        lineDataSet.lineWidth = 2f
-                        sets.add(lineDataSet)
-                    }
-
-                }
-                else -> {
-                    val lineDataSet = KVectorHelper.initDataSet(graphData[i], graphData[i + 1], graphData)
-                    lineDataSet.setColors(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                    lineDataSet.lineWidth = 2f
-                    if (i % 2 != 0) {
-                        lineDataSet.setDrawCircles(false)
-                    }
-                    sets.add(lineDataSet)
-                }
-            }
+        val (sets, kVectorGraphData) = KVectorHelper.getDataSets(graphData)
+        sets.forEach {
+            (it as LineDataSet).setColors(ContextCompat.getColor(requireContext(), R.color.purple_500))
         }
 
         val lineData = LineData(sets)
@@ -122,55 +88,23 @@ class KVectorFragment : Fragment() {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
 
                 h?.let {
-                    println(it.dataSetIndex)
-                    println(it.dataIndex)
-                    val dataSetIndex = if (it.dataSetIndex == 0)
-                        0
-                    else {
-                        it.dataSetIndex
-                    }
 
-                    /*if (dataSetIndex % 2 == 0) {
-                        val index = 2 * dataSetIndex + h.dataIndex
-                        val analysisName = graphData[index].name
-                        var info = ""
-                        var start = 0f
-                        var end = 0f
-                        var value = 0f
-                        for (obj in analyzes) {
-                            if (obj.name == analysisName) {
-                                info = obj.info
-                                start = obj.greenStart
-                                end = obj.greenEnd
-                                value = graphData[index].value
-                            }
-                        }
-                        showResultInfoDialog(info, start, end, value)
-                    }*/
+                    println("wewewe  ${it.x}  in  $graphData")
+                    val curData = kVectorGraphData.filter { graphData ->
+                        graphData.x == it.x && graphData.y == it.y
+                    }
+                    val name = curData[0].name
+
+                    val curGraphData = graphData.filter { graphData ->
+                        graphData.name == name
+                    }
+                    val value = curGraphData[0].value
+
+                    analyzes.forEach { analyse ->
+                        if (analyse.name == name)
+                            showResultInfoDialog(analyse.info, analyse.greenStart, analyse.greenEnd, value)
+                    }
                 }
-                /*if (h != null) {
-                    var index = 0
-                    index = if (h.dataSetIndex == 0) {
-                        0
-                    } else {
-                        h.dataSetIndex - 1
-                    }
-
-                    val analysisName = graphData[index].name
-                    var info = ""
-                    var start = 0f
-                    var end = 0f
-                    var value = 0f
-                    for (obj in analyzes) {
-                        if (obj.name == analysisName) {
-                            info = obj.info
-                            start = obj.greenStart
-                            end = obj.greenEnd
-                            value = graphData[index].value
-                        }
-                    }
-                    showResultInfoDialog(info, start, end, value)
-                }*/
             }
 
             override fun onNothingSelected() {}
@@ -182,6 +116,7 @@ class KVectorFragment : Fragment() {
 
     fun setGraphData(myEntries: ArrayList<MyEntry>) {
         this.graphData = myEntries
+        this.graphData.add(0, MyEntry(0f, 0f, "", 0f))
     }
 
     fun setAnalyzes(analyzes: ArrayList<Analysis>) {
